@@ -31,7 +31,14 @@ export default function Login() {
     })
     setBusy(false)
     if (error) {
-      setError(/invalid|credentials/i.test(error.message) ? 'Wrong email or password.' : error.message)
+      // Only the real "bad password / unknown user" error gets the friendly text.
+      // Anything else (bad API key, unconfirmed email, network) shows its real message.
+      const wrongCredentials = /invalid login credentials/i.test(error.message)
+      setError(
+        wrongCredentials
+          ? 'Wrong email or password.'
+          : `${error.message} (code: ${error.code || error.status || 'none'})`,
+      )
     }
   }
 
