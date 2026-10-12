@@ -11,6 +11,7 @@ export default function Login() {
   const redirected = useRef(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
 
@@ -61,6 +62,9 @@ export default function Login() {
             type="email"
             inputMode="email"
             autoComplete="username"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             placeholder="Email"
             className={input}
             value={email}
@@ -68,14 +72,21 @@ export default function Login() {
             required
           />
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             autoComplete="current-password"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             placeholder="Password"
             className={input}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <input type="checkbox" checked={showPassword} onChange={(e) => setShowPassword(e.target.checked)} />
+            Show password
+          </label>
           {error && (
             <div className="rounded-md bg-red-50 border border-red-300 p-2 text-sm text-red-900">{error}</div>
           )}

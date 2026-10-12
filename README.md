@@ -33,6 +33,7 @@ Staff:   email + password (accounts created by an admin in the Supabase dashboar
    - `migrations/001_no_email_login.sql`
    - `migrations/002_sheet_mirror.sql`
    - `migrations/003_sheet_projects.sql`
+   - `migrations/004_intern_limits.sql`
 2. Supabase: Authentication, Sign In / Providers: turn ON "Allow anonymous sign-ins".
    Keep "Confirm email" ON (staff accounts are created by the dashboard with Auto Confirm).
 3. Supabase: Authentication, Rate Limits: raise the limit for anonymous sign-ins (for example to 300 per hour).
@@ -43,6 +44,19 @@ Staff:   email + password (accounts created by an admin in the Supabase dashboar
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY` (the public anon key; never use the service_role key)
 6. Create the first admin (see below), log in at `/login`, open "Lab QR", print it.
+
+## Who can do what
+
+| | Student | Intern | Admin |
+|---|---|---|---|
+| Check in/out, register ideas, request components | yes | yes | yes |
+| Request queue: approve, hand over, returns | | yes | yes |
+| Inventory | | view | add, edit stock |
+| Inside now (view, manual check-out) | | yes | yes |
+| Idea pool, Projects | | | yes |
+| Team, Lab QR, Google Sheet | | | yes |
+
+Enforced in the database (migration 004), not just hidden in the menu.
 
 ## Google Sheets mirror
 

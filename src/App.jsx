@@ -75,7 +75,7 @@ export default function App() {
         <Route
           path="/staff/ideas"
           element={
-            <RequireRole roles={['intern', 'admin']}>
+            <RequireRole roles={['admin']}>
               <IdeaPool />
             </RequireRole>
           }
@@ -83,7 +83,7 @@ export default function App() {
         <Route
           path="/staff/projects"
           element={
-            <RequireRole roles={['intern', 'admin']}>
+            <RequireRole roles={['admin']}>
               <Projects />
             </RequireRole>
           }
