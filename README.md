@@ -5,8 +5,9 @@ Hosted free on Cloudflare Pages. No emails and no Google login.
 
 ## Status
 
-- Done: QR check-in/out, one-time student registration, staff "inside now" list, admin QR page, staff password login
-- Next: ideas, component requests, inventory, projects, Google Sheets mirror
+- Done: QR check-in/out, one-time student registration, staff "inside now" list, admin QR page, staff password login,
+  idea registration, component requests, staff request queue (approve, hand over, returns), inventory (admin add/bulk add/restock), idea pool
+- Next: admin projects page, Google Sheets mirror
 
 ## How login works
 
@@ -50,6 +51,9 @@ Create a staff account (admin or intern):
 
 Other tasks:
 
+- Stock the lab first: Inventory, "Bulk add" (one component per line). Students can only request what is listed.
+- Request flow: student registers an idea, requests parts; staff open Queue: Approve, then "Hand over items"
+  (stock drops), later "Returned" per item. Consumables are never returned.
 - Show/print the lab QR: log in as admin, open "Lab QR".
 - Rotate the QR token if the code is leaked. Print the new code afterwards.
 - A student is blocked as "already registered" (new phone): run
@@ -73,8 +77,8 @@ src/
   App.jsx             routes
   AuthContext.jsx     session + profile
   supabaseClient.js   Supabase connection
-  components/         Layout, route guards (Guards.jsx also creates the student account)
-  pages/              Login (staff), Home, Profile, CheckIn
-  pages/staff/        Inside (live list), QRPage (admin)
+  components/         Layout, ui helpers, route guards (Guards.jsx also creates the student account)
+  pages/              Login (staff), Home, Profile, CheckIn, Ideas, Requests, NewRequest
+  pages/staff/        Inside, Queue, Inventory, IdeaPool, QRPage (admin)
   lib/                small helpers
 ```

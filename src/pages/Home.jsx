@@ -30,17 +30,27 @@ export default function Home() {
         </ul>
       </section>
 
+      <section className="bg-white rounded-lg border border-slate-200 p-4 space-y-2">
+        <h2 className="font-semibold">Need components?</h2>
+        <ol className="list-decimal pl-5 text-sm text-slate-700 space-y-1">
+          <li><Link to="/ideas" className="underline">Register your idea</Link> (required first).</li>
+          <li><Link to="/requests/new" className="underline">Request components</Link> for that idea.</li>
+          <li>Lab staff approve it and hand the parts over. Return borrowed items when done.</li>
+        </ol>
+      </section>
+
       {staff && (
         <section className="bg-white rounded-lg border border-slate-200 p-4 space-y-2">
           <h2 className="font-semibold">Staff</h2>
           <div className="flex flex-wrap gap-3 text-sm">
             <Link to="/staff/inside" className="underline">Who is inside now</Link>
+            <Link to="/staff/queue" className="underline">Request queue</Link>
+            <Link to="/staff/inventory" className="underline">Inventory</Link>
+            <Link to="/staff/ideas" className="underline">Idea pool</Link>
             {admin && <Link to="/staff/qr" className="underline">Lab QR code</Link>}
           </div>
         </section>
       )}
-
-      <p className="text-xs text-slate-400">Ideas, component requests and inventory are coming next.</p>
     </div>
   )
 }

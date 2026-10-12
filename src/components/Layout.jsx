@@ -19,8 +19,14 @@ export default function Layout() {
         <div className="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center gap-2">
           <span className="font-bold mr-4">Makerspace</span>
           <NavLink to="/" end className={link}>Home</NavLink>
+          <NavLink to="/ideas" className={link}>Ideas</NavLink>
+          <NavLink to="/requests" className={link}>Requests</NavLink>
           <NavLink to="/profile" className={link}>Profile</NavLink>
+          {staff && <span className="hidden sm:inline text-slate-300 px-1">|</span>}
           {staff && <NavLink to="/staff/inside" className={link}>Inside now</NavLink>}
+          {staff && <NavLink to="/staff/queue" className={link}>Queue</NavLink>}
+          {staff && <NavLink to="/staff/inventory" className={link}>Inventory</NavLink>}
+          {staff && <NavLink to="/staff/ideas" className={link}>Idea pool</NavLink>}
           {admin && <NavLink to="/staff/qr" className={link}>Lab QR</NavLink>}
           <span className="ml-auto text-xs text-slate-500 hidden sm:inline">
             {profile?.full_name || user?.email}

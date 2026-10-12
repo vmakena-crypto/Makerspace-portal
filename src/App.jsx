@@ -8,6 +8,12 @@ import Profile from './pages/Profile'
 import CheckIn from './pages/CheckIn'
 import Inside from './pages/staff/Inside'
 import QRPage from './pages/staff/QRPage'
+import Ideas from './pages/Ideas'
+import Requests from './pages/Requests'
+import NewRequest from './pages/NewRequest'
+import Queue from './pages/staff/Queue'
+import Inventory from './pages/staff/Inventory'
+import IdeaPool from './pages/staff/IdeaPool'
 
 export default function App() {
   if (!configured) {
@@ -37,11 +43,38 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/checkin" element={<CheckIn />} />
+        <Route path="/ideas" element={<Ideas />} />
+        <Route path="/requests" element={<Requests />} />
+        <Route path="/requests/new" element={<NewRequest />} />
         <Route
           path="/staff/inside"
           element={
             <RequireRole roles={['intern', 'admin']}>
               <Inside />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/staff/queue"
+          element={
+            <RequireRole roles={['intern', 'admin']}>
+              <Queue />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/staff/inventory"
+          element={
+            <RequireRole roles={['intern', 'admin']}>
+              <Inventory />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/staff/ideas"
+          element={
+            <RequireRole roles={['intern', 'admin']}>
+              <IdeaPool />
             </RequireRole>
           }
         />
