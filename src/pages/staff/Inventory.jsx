@@ -63,6 +63,7 @@ export default function Inventory() {
               <th className="p-2">Shelf</th>
               <th className="p-2 text-right">Stock</th>
               <th className="p-2 text-right">Min</th>
+              {admin && <th className="p-2" title="Consumables are never returned">Consumable</th>}
               {admin && <th className="p-2">Adjust</th>}
             </tr>
           </thead>
@@ -98,16 +99,27 @@ function Row({ c, admin, reload, setError }) {
     reload()
   }
 
+  async function toggleConsumable(value) {
+    setError(null)
+    const { error } = await supabase.from('components').update({ is_consumable: value }).eq('id', c.id)
+    if (error) setError(error.message)
+    reload()
+  }
+
   return (
     <tr className={low ? 'bg-red-50' : ''}>
       <td className="p-2">
         {c.name}
-        {c.is_consumable && <span className="text-xs text-slate-400"> consumable</span>}
       </td>
       <td className="p-2 text-slate-600">{c.category}</td>
       <td className="p-2 text-slate-600">{c.location}</td>
       <td className={`p-2 text-right font-medium ${low ? 'text-red-700' : ''}`}>{c.stock}</td>
       <td className="p-2 text-right text-slate-500">{c.min_stock}</td>
+      {admin && (
+        <td className="p-2 text-center">
+          <input type="checkbox" checked={c.is_consumable} onChange={(e) => toggleConsumable(e.target.checked)} />
+        </td>
+      )}
       {admin && (
         <td className="p-2">
           <span className="flex items-center gap-1">

@@ -51,6 +51,8 @@ Create a staff account (admin or intern):
 
 Other tasks:
 
+- Load the lab's existing stock in one go: run `import_inventory.sql` in the SQL Editor (safe to run twice).
+  Then check the Consumable ticks in Inventory (consumables are never returned).
 - Stock the lab first: Inventory, "Bulk add" (one component per line). Students can only request what is listed.
 - Request flow: student registers an idea, requests parts; staff open Queue: Approve, then "Hand over items"
   (stock drops), later "Returned" per item. Consumables are never returned.
