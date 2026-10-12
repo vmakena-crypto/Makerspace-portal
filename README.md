@@ -9,6 +9,7 @@ Hosted free on Cloudflare Pages. No emails and no Google login.
   idea registration, component requests, staff request queue (approve, hand over, returns), inventory (admin add/bulk add/restock), idea pool
 - Google Sheets mirror (migration 002 + `sheets/Code.gs`, syncs every 10 minutes)
 - Projects page (admin: make a project from an idea, track status/dates/notes)
+- Team page (admin adds/manages interns in the portal)
 - Next: nothing planned; see Admin guide
 
 ## How login works
@@ -55,7 +56,14 @@ Staff:   email + password (accounts created by an admin in the Supabase dashboar
 
 ## Admin guide
 
-Create a staff account (admin or intern):
+Create a staff account (admin or intern) from the portal: log in as admin, open **Team**, add the email, a password
+and a role. This needs the `manage-staff` Edge Function deployed once (see below).
+
+Deploy `manage-staff` once (browser only): Supabase, Edge Functions, Deploy a new function, Via Editor, name it
+exactly `manage-staff`, paste `supabase/functions/manage-staff/index.ts`, Deploy. If Team shows "Invalid JWT",
+open the function's settings and turn OFF "Verify JWT" (the function checks the login itself).
+
+Manual fallback (SQL + dashboard):
 
 1. SQL Editor: `insert into public.allowed_emails(email) values ('person@example.com');`
 2. Supabase: Authentication, Users, Add user, Create new user. Enter that email and a password
@@ -89,6 +97,7 @@ Other tasks:
 ```
 migrations/           SQL changes, run in order after makerspace_schema.sql
 sheets/Code.gs        Google Apps Script that fills the Sheet
+supabase/functions/   Edge Function used by the Team page
 src/
   main.jsx            entry
   App.jsx             routes
@@ -96,6 +105,6 @@ src/
   supabaseClient.js   Supabase connection
   components/         Layout, ui helpers, route guards (Guards.jsx also creates the student account)
   pages/              Login (staff), Home, Profile, CheckIn, Ideas, Requests, NewRequest
-  pages/staff/        Inside, Queue, Inventory, IdeaPool, Projects, QRPage (admin)
+  pages/staff/        Inside, Queue, Inventory, IdeaPool, Projects, Team (admin), QRPage (admin)
   lib/                small helpers
 ```
