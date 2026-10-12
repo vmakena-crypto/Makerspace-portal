@@ -26,6 +26,7 @@ export default function Home() {
           <li>Scan the QR code at the lab entrance with your phone camera.</li>
           <li>Tap the button on the page that opens.</li>
           <li>Scan the same QR again when you leave.</li>
+          <li>Use the same phone and browser each time. Private or incognito mode forgets you.</li>
         </ul>
       </section>
 

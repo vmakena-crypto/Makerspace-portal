@@ -48,7 +48,13 @@ export default function Profile() {
       })
       .eq('id', user.id)
     setBusy(false)
-    if (error) return setError(error.message)
+    if (error) {
+      return setError(
+        /duplicate|unique/i.test(error.message)
+          ? 'This registration number is already registered (maybe from another phone). Ask the lab staff to help.'
+          : error.message,
+      )
+    }
     await refreshProfile()
     navigate(consumePath() || '/', { replace: true })
   }
@@ -58,7 +64,7 @@ export default function Profile() {
   return (
     <div className="max-w-md space-y-4">
       <h1 className="text-2xl font-bold">Your profile</h1>
-      <p className="text-sm text-slate-600">You only fill this in once.</p>
+      <p className="text-sm text-slate-600">You only fill this in once. This phone will remember you.</p>
 
       <form onSubmit={submit} className="space-y-3 bg-white rounded-lg border border-slate-200 p-4">
         <label className="block text-sm">

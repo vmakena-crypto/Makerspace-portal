@@ -9,6 +9,9 @@ export default function Layout() {
   const { profile, user, signOut } = useAuth()
   const staff = profile && ['intern', 'admin'].includes(profile.role)
   const admin = profile?.role === 'admin'
+  // Students are anonymous accounts: signing out would make the phone forget them,
+  // so only staff accounts get a sign-out button.
+  const canSignOut = user && !user.is_anonymous
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -19,8 +22,12 @@ export default function Layout() {
           <NavLink to="/profile" className={link}>Profile</NavLink>
           {staff && <NavLink to="/staff/inside" className={link}>Inside now</NavLink>}
           {admin && <NavLink to="/staff/qr" className={link}>Lab QR</NavLink>}
-          <span className="ml-auto text-xs text-slate-500 hidden sm:inline">{user?.email}</span>
-          <button onClick={signOut} className="text-sm underline text-slate-700">Sign out</button>
+          <span className="ml-auto text-xs text-slate-500 hidden sm:inline">
+            {profile?.full_name || user?.email}
+          </span>
+          {canSignOut && (
+            <button onClick={signOut} className="text-sm underline text-slate-700">Sign out</button>
+          )}
         </div>
       </header>
       <main className="max-w-5xl mx-auto px-4 py-6">
