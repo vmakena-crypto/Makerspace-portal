@@ -14,6 +14,7 @@ import NewRequest from './pages/NewRequest'
 import Queue from './pages/staff/Queue'
 import Inventory from './pages/staff/Inventory'
 import IdeaPool from './pages/staff/IdeaPool'
+import Projects from './pages/staff/Projects'
 
 export default function App() {
   if (!configured) {
@@ -75,6 +76,14 @@ export default function App() {
           element={
             <RequireRole roles={['intern', 'admin']}>
               <IdeaPool />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/staff/projects"
+          element={
+            <RequireRole roles={['intern', 'admin']}>
+              <Projects />
             </RequireRole>
           }
         />

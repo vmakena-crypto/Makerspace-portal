@@ -7,7 +7,9 @@ Hosted free on Cloudflare Pages. No emails and no Google login.
 
 - Done: QR check-in/out, one-time student registration, staff "inside now" list, admin QR page, staff password login,
   idea registration, component requests, staff request queue (approve, hand over, returns), inventory (admin add/bulk add/restock), idea pool
-- Next: admin projects page, Google Sheets mirror
+- Google Sheets mirror (migration 002 + `sheets/Code.gs`, syncs every 10 minutes)
+- Projects page (admin: make a project from an idea, track status/dates/notes)
+- Next: nothing planned; see Admin guide
 
 ## How login works
 
@@ -28,6 +30,8 @@ Staff:   email + password (accounts created by an admin in the Supabase dashboar
 1. Supabase: create a project. In the SQL Editor run, in this order:
    - `makerspace_schema.sql`
    - `migrations/001_no_email_login.sql`
+   - `migrations/002_sheet_mirror.sql`
+   - `migrations/003_sheet_projects.sql`
 2. Supabase: Authentication, Sign In / Providers: turn ON "Allow anonymous sign-ins".
    Keep "Confirm email" ON (staff accounts are created by the dashboard with Auto Confirm).
 3. Supabase: Authentication, Rate Limits: raise the limit for anonymous sign-ins (for example to 300 per hour).
@@ -38,6 +42,16 @@ Staff:   email + password (accounts created by an admin in the Supabase dashboar
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY` (the public anon key; never use the service_role key)
 6. Create the first admin (see below), log in at `/login`, open "Lab QR", print it.
+
+## Google Sheets mirror
+
+- Supabase stays the database; the Sheet is a read-only copy refreshed every 10 minutes (up to 10 minutes behind).
+- Tabs: Visits, Requests, Outstanding, Inventory, Ideas, Projects, Status.
+- Setup: run `migrations/002_sheet_mirror.sql`; get the secret with
+  `select value from public.settings where key = 'sheet_secret';`
+  then in a new Google Sheet: Extensions, Apps Script, paste `sheets/Code.gs`, fill the 3 values, run `installTrigger` once.
+- The Sheet contains names and phone numbers: keep it private (do not share it with a link).
+- If the secret leaks: update `public.settings` set `sheet_secret` to a new value (SQL is at the bottom of migration 002) and paste it into the script.
 
 ## Admin guide
 
@@ -74,6 +88,7 @@ Other tasks:
 
 ```
 migrations/           SQL changes, run in order after makerspace_schema.sql
+sheets/Code.gs        Google Apps Script that fills the Sheet
 src/
   main.jsx            entry
   App.jsx             routes
@@ -81,6 +96,6 @@ src/
   supabaseClient.js   Supabase connection
   components/         Layout, ui helpers, route guards (Guards.jsx also creates the student account)
   pages/              Login (staff), Home, Profile, CheckIn, Ideas, Requests, NewRequest
-  pages/staff/        Inside, Queue, Inventory, IdeaPool, QRPage (admin)
+  pages/staff/        Inside, Queue, Inventory, IdeaPool, Projects, QRPage (admin)
   lib/                small helpers
 ```

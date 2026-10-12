@@ -27,6 +27,7 @@ export default function Layout() {
           {staff && <NavLink to="/staff/queue" className={link}>Queue</NavLink>}
           {staff && <NavLink to="/staff/inventory" className={link}>Inventory</NavLink>}
           {staff && <NavLink to="/staff/ideas" className={link}>Idea pool</NavLink>}
+          {staff && <NavLink to="/staff/projects" className={link}>Projects</NavLink>}
           {admin && <NavLink to="/staff/qr" className={link}>Lab QR</NavLink>}
           <span className="ml-auto text-xs text-slate-500 hidden sm:inline">
             {profile?.full_name || user?.email}

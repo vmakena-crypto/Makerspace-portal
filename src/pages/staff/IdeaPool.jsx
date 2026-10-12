@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { supabase } from '../../supabaseClient'
-import { Card, ErrorBox, StatusBadge, input, useLoad } from '../../components/ui'
+import { useAuth } from '../../AuthContext'
+import { Card, ErrorBox, StatusBadge, btnGhost, input, useLoad } from '../../components/ui'
 import { formatIST } from '../../lib/format'
 
 const STATUSES = ['submitted', 'in_progress', 'completed', 'dropped']
 
 export default function IdeaPool() {
+  const { profile } = useAuth()
+  const admin = profile?.role === 'admin'
   const [filter, setFilter] = useState('')
   const [q, setQ] = useState('')
   const [actionError, setActionError] = useState(null)
@@ -13,10 +16,28 @@ export default function IdeaPool() {
     () =>
       supabase
         .from('ideas')
-        .select('id,title,description,domain,team_members,status,created_at, profiles!owner_id(full_name,reg_no,branch)')
+        .select('id,owner_id,title,description,domain,team_members,status,created_at, profiles!owner_id(full_name,reg_no,branch)')
         .order('created_at', { ascending: false }),
     [],
   )
+
+  const projects = useLoad(() => supabase.from('projects').select('idea_id'), [])
+  const hasProject = new Set((projects.data || []).map((x) => x.idea_id))
+
+  async function makeProject(i) {
+    setActionError(null)
+    const { error } = await supabase.from('projects').insert({
+      idea_id: i.id,
+      name: i.title,
+      description: i.description,
+      lead_id: i.owner_id,
+      status: 'planned',
+    })
+    if (error) return setActionError(error.message)
+    await supabase.from('ideas').update({ status: 'in_progress' }).eq('id', i.id)
+    projects.reload()
+    reload()
+  }
 
   async function setStatus(id, status) {
     setActionError(null)
@@ -78,6 +99,13 @@ export default function IdeaPool() {
                 ))}
               </select>
             </label>
+            {admin && (
+              hasProject.has(i.id) ? (
+                <p className="text-xs text-green-700">Already a project</p>
+              ) : (
+                <button className={btnGhost} onClick={() => makeProject(i)}>Make project</button>
+              )
+            )}
           </Card>
         ))}
       </div>

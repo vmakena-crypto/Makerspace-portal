@@ -47,6 +47,7 @@ export default function Home() {
             <Link to="/staff/queue" className="underline">Request queue</Link>
             <Link to="/staff/inventory" className="underline">Inventory</Link>
             <Link to="/staff/ideas" className="underline">Idea pool</Link>
+            <Link to="/staff/projects" className="underline">Projects</Link>
             {admin && <Link to="/staff/qr" className="underline">Lab QR code</Link>}
           </div>
         </section>
