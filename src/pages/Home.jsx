@@ -53,6 +53,12 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {!staff && (
+        <p className="text-xs text-slate-400">
+          Lab staff: <Link to="/login" className="underline">staff login</Link>
+        </p>
+      )}
     </div>
   )
 }

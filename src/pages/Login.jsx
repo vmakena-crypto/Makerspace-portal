@@ -15,7 +15,9 @@ export default function Login() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (!loading && user && !redirected.current) {
+    // Anonymous (student) sessions must still be able to see this form: an intern who once scanned the
+    // lab QR on this browser is "signed in" as a student and needs to switch to their staff account.
+    if (!loading && user && !user.is_anonymous && !redirected.current) {
       redirected.current = true
       navigate(consumePath() || '/', { replace: true })
     }
